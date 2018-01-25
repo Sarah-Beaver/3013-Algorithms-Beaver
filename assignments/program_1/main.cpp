@@ -1,3 +1,12 @@
+// Title:            program_1
+// Files:            main.cpp
+// Semester:         3013 Advanced Algorithms Spring 2018
+//
+// Author:           Sarah Beaver
+// Email:            sbeaver57@yahoo.com
+// Description:
+//       a priority queue that orders 
+//       items in ascending order
 #include <iostream>
 #include <ctime>
 
@@ -15,6 +24,7 @@ struct node{
 *     Implements a singly linked list that holds integers. 
 * Methods:
 *     void  frontSert(int x)
+*     void  ordersert(int x)
 *     node* find(int key)
 *     node* remove(int key)
 *     void  print()
@@ -26,7 +36,8 @@ class intLinkedList{
   intLinkedList(){
     Head = NULL;
   }
-  
+
+//inserts item at the from of list
   void frontSert(int x){
     //empty list case
     if(!Head){
@@ -40,7 +51,8 @@ class intLinkedList{
       Head = T;
     }
   }
-  
+
+//inserts an item into in ascending order
   void orderSert(int x)
   {
      //empty list case
@@ -73,6 +85,7 @@ class intLinkedList{
     }
   }
   
+//find the key returns null if not in the list  
   node* Find(int key){
     node* temp = Head;
     while(temp){
@@ -83,7 +96,8 @@ class intLinkedList{
     }
     return NULL;
   }
-  
+ 
+ //removes the key from the queue 
   void Remove(int key){
     node* result = Find(key);
     if(result){
@@ -96,6 +110,7 @@ class intLinkedList{
     }
   }
   
+//prints out the list   
   void print(){
     node* p = Head;
     while(p){
