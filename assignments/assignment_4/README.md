@@ -1,10 +1,10 @@
-Name: Sarah Beaver
-Date: February 12
-Assignment: Program 2
-Description:
-    fix the delete method in the Binary Search Tree
+Name: Sarah Beaver<br/>
+Date: February 12<br/>
+Assignment: Program 2<br/>
+Description:<br/>
+    fix the delete method in the Binary Search Tree<br/><br/>
 
-Files:
-    - main.cpp 
-    - BSTree.h
-    - BSTree.cpp
+Files:<br/>
+    - main.cpp <br/>
+    - BSTree.h<br/>
+    - BSTree.cpp<br/>
