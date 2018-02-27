@@ -25,11 +25,15 @@ int main()
 	verb.open("verb.txt");
 	ofstream output;
 	output.open("tenthousandwords.txt");
+
+	//lists to hold each type of word and the final word
 	vector<string>animallist;
 	vector<string>adverblist;
 	vector<string>adjectivelist;
 	vector<string>nounlist;
 	vector<string>verblist;
+	vector<string> words;
+	//holds a word and used to create crazy words
 	string s;
 	srand(57);
 
@@ -143,7 +147,22 @@ int main()
 			spot = rand() % animallist.size();
 			s += animallist[spot] + " ";
 		}
-		output <<s<<"\n";
+		bool check = false;
+		//looking for duplicates in the list;
+		for (int j = 0; j < words.size(); j++)
+		{
+			if (s == words[j])
+				check = true;
+		}
+		//if check is true means was a duplicate and decrease i for another loop
+		if (check == true)
+			i--;
+		//else outputs the word
+		else
+		{
+			output << s << "\n";
+		}
 		s = "";
+	
 	}
 }
