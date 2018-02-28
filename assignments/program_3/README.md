@@ -2,7 +2,7 @@ Name: Sarah Beaver<br/>
 Date: February 27<br/>
 Assignment: Program 3<br/>
 Description:<br/>
-    creating crazy words and comparing if binary search trees or avl trees perfroms betterbr/><br/>
+    creating crazy words and comparing if binary search trees or avl trees perfroms better<br/><br/>
 
 Files:<br/>
     generate_words.cpp<br/>
