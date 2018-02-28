@@ -25,7 +25,8 @@ int main(int argc, char **argv)
 	out.open("analysis.out");
 	string s;
 	string type;
-	int numOfAdj=0, numOfAdv=0, numOfAnimal=0, numOfVerb=0, numOfNoun=0,bst=0,avl=0;
+	int numOfAdj = 0, numOfAdv = 0, numOfAnimal = 0, numOfVerb = 0, numOfNoun = 0;
+	unsigned long long bst = 0, avl = 0;
 	BSTree binarysearch;
 	avlTree avlsearch;
 	// file pointer
