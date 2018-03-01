@@ -157,9 +157,10 @@ int main()
 		//if check is true means was a duplicate and decrease i for another loop
 		if (check == true)
 			i--;
-		//else outputs the word
+		//else outputs the word and adds it to list
 		else
 		{
+			words.push_back(s);
 			output << s << "\n";
 		}
 		s = "";
