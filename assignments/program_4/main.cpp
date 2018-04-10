@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 		//checks if state is not Puerto Ricoo
 		if (state != "PR")
 		{
-			G = loadGraphCSV("cities.csv");
+			G = loadGraphCSV("filtered_cities.csv");
 			//checks for good choices else will default to KS, if good choice will find the right city
 			if (state == "FL" || state == "TX" || state == "MA" || state == "OR") {
 				for (int i = 0; i < G.vertexList.size(); i++)
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 		//Add Puerto Rico cities only and find correct city to start with
 		else
 		{
-			G = loadPRGraphCSV("cities.csv");
+			G = loadPRGraphCSV("filtered_cities.csv");
 			for (int i = 0; i < G.vertexList.size(); i++)
 			{
 				if (G.vertexList[i]->state == "PR"&&G.vertexList[i]->city == "San Juan")
