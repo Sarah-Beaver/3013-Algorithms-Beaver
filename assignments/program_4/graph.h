@@ -1,4 +1,15 @@
-
+#pragma once
+///////////////////////////////////////////////////////////////////////////////
+//                   YOU MUST COMPLETE AND COMMENT YOUR CODE!
+// Title:            Program 4 Create Graph 
+// Files:            csv.h, distance.h,edge_heap.h,graph.h,cities.csv,main.cpp
+// Semester:         Advanced Algorithms Spring 2018
+//
+// Author:           Sarah Beaver
+// Email:            sbeaver57@yahoo.com
+// Description:
+//       connecting cities to their closest n cities using a graph, using a min heap to oder the edges
+/////////////////////////////////////////////////////////////////////////////////
 // A simple representation of graph using STL
 #include <vector>
 #include <map>
@@ -121,6 +132,27 @@ struct vertex
 		county = cou;
 		loc = ll;
 		visited = false;
+	}
+
+	/**
+	* operator= - overload assignment for vertex
+	* Params:
+	*     const vertex ll     
+	* Returns
+	*     reference to assignment for chaining (e.g. a = b = c )
+	*/
+	vertex &operator=(const vertex &ll)
+	{
+		// do the copy
+		ID = ll.ID;
+		city = ll.city;
+		state = ll.state;
+		county = ll.county;
+		loc = ll.loc;
+		visited = ll.visited;
+
+		// return the existing object so we can chain this operator
+		return *this;
 	}
 
 	/**
