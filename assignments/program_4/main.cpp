@@ -10,8 +10,14 @@
 #include <string>
 #include "graph.h"
 #include<queue>
+#include "edge_heap.h"
 
 using namespace std;
+/*
+
+
+
+*/
 
 int main(int argc, char **argv)
 {
@@ -20,19 +26,21 @@ int main(int argc, char **argv)
 	string state = "KS";
 	string county = "Smith";
 	latlon st(39.809734, -98.55562);
-
+	int maxedge = 3;
 	ofstream output;
 	output.open("output.txt", fstream::app);
 	int numloop = 1;
 
-
-	if (argc > 1&&argc<3) {
+	if (argc > 1 && argc<4) {
 		state = argv[1];
+		maxedge = (int)argv[2];
 	}
 	else {
 		cout << "Usage: ./graph state(or ALL)" << endl;
 		exit(0);
 	}
+
+
 
 	//if user selects all states then loops 5 times for each state
 	if (state == "ALL" || state == "All")
@@ -42,12 +50,12 @@ int main(int argc, char **argv)
 	{
 		double miles = 0;
 		int edges = 0;
-		double dist1 = DBL_MAX, dist2 = DBL_MAX, dist3 = DBL_MAX;
-		vertex cit1, cit2, cit3;
+		vector<edge*> distances;
 		queue<vertex *> list;
 		vector<vertex *> cities;
 		graph G;
 		vertex* start;
+	
 		//checks if numloop equals 5 for five loops
 		if (numloop == 5)
 		{
@@ -125,7 +133,8 @@ int main(int argc, char **argv)
 			start = list.front();
 			list.pop();
 			//checking if has less than three edges
-			if (start->E.size() < 3) {
+			if (start->E.size() < maxedge) {
+				distances.push_back(nullptr);
 				//loops through the cities to find closest ones
 				for (int i = 0; i < cities.size(); i++)
 				{
@@ -136,87 +145,59 @@ int main(int argc, char **argv)
 						i--;
 					}
 					//checks if city already has three edges
-					else if (G.vertexList[cities[i]->ID]->E.size() >= 3)
+					else if (G.vertexList[cities[i]->ID]->E.size() >= maxedge)
 					{
 						cities.erase(cities.begin() + i);
 						i--;
 					}
 					else
 					{
-						
-						
 						double temp;
-						double temp2;
-						vertex tempcit;
-						vertex tempcit2;
-						
-							temp = distanceEarth(start->loc.lat, start->loc.lon, cities[i]->loc.lat, cities[i]->loc.lon);
-							tempcit2 = *cities[i];
-							//checking if it is less than previous ditance, if so swaps
-							if (temp < dist1)
-							{
-								temp2 = dist1;
-								dist1 = temp;
-								temp = temp2;
 
-
-								tempcit = cit1;
-								cit1 = tempcit2;
-								tempcit2 = tempcit;
-
-							}
-							if (temp < dist2)
-							{
-								temp2 = dist2;
-								dist2 = temp;
-								temp = temp2;
-
-								tempcit = cit2;
-								cit2 = tempcit2;
-								tempcit2 = tempcit;
-							}
-							if (temp < dist3)
-							{
-								temp2 = dist3;
-								dist3 = temp;
-								temp = temp2;
-
-								tempcit = cit3;
-								cit3 = tempcit2;
-								tempcit2 = tempcit;
-							}
-						
+						temp = distanceEarth(start->loc.lat, start->loc.lon, cities[i]->loc.lat, cities[i]->loc.lon);
+						if (temp < 300)
+							distances.push_back(new edge(cities[i]->ID, temp));
 					}
 				}
 				//see how many edges has left
-				int loop = 3 - start->E.size();
-				
-					//add appropiate amount of edges and makes sure dist has changed
-					if (loop > 0 && !(dist1 == DBL_MAX))
+				int loop = maxedge - start->E.size();
+				edgeHeap min;
+				min.Heapify(distances, distances.size());
+
+				//add appropiate amount of edges and makes sure dist has changed
+				for (int i = 0; i < loop; i++)
+				{
+					edge* temp = min.Extract();
+					if (temp)
 					{
-						G.addEdge(start->ID, cit1.ID, dist1);
-						edges++;
-						miles += dist1;
-						if(G.vertexList[cit1.ID]->E.size()<3)
-							list.push(G.vertexList[cit1.ID]);
+						if (list.size() < 3)
+						{
+							if ((G.vertexList[temp->toID]->E.size() < (maxedge-1)))
+							{
+								G.addEdge(start->ID, temp->toID, temp->weight);
+								miles += temp->weight;
+								edges++;
+								if (G.vertexList[temp->toID]->E.size() < maxedge)
+									list.push(G.vertexList[temp->toID]);
+							}
+							else
+								break;
+
+						}
+						else
+						{
+							G.addEdge(start->ID, temp->toID, temp->weight);
+							miles += temp->weight;
+							edges++;
+							if (G.vertexList[temp->toID]->E.size() < maxedge)
+								list.push(G.vertexList[temp->toID]);
+						}
 					}
-					if (loop > 1 && !(dist2 == DBL_MAX))
-					{
-						G.addEdge(start->ID, cit2.ID, dist2);
-						edges++;
-						miles += dist2;
-						if (G.vertexList[cit2.ID]->E.size()<3)
-							list.push(G.vertexList[cit2.ID]);
-					}
-					if (loop > 2 && !(dist3 == DBL_MAX))
-					{
-						G.addEdge(start->ID, cit3.ID, dist3);
-						edges++;
-						miles += dist3;
-						if (G.vertexList[cit3.ID]->E.size()<3)
-							list.push(G.vertexList[cit3.ID]);
-					}
-				dist1 = DBL_MAX; dist2 = DBL_MAX; dist3 = DBL_MAX;
+					else
+						break;
+				}
+				min.Clear();
+				distances.clear();
 			}
 		}
 		if (state == "PR")
