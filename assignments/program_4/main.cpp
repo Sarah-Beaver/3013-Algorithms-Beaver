@@ -13,11 +13,6 @@
 #include "edge_heap.h"
 
 using namespace std;
-/*
-
-
-
-*/
 
 int main(int argc, char **argv)
 {
@@ -132,7 +127,7 @@ int main(int argc, char **argv)
 		{
 			start = list.front();
 			list.pop();
-			//checking if has less than three edges
+			//checking if has less than max edges
 			if (start->E.size() < maxedge) {
 				distances.push_back(nullptr);
 				//loops through the cities to find closest ones
@@ -144,7 +139,7 @@ int main(int argc, char **argv)
 						cities.erase(cities.begin() + i);
 						i--;
 					}
-					//checks if city already has three edges
+					//checks if city already has max edges
 					else if (G.vertexList[cities[i]->ID]->E.size() >= maxedge)
 					{
 						cities.erase(cities.begin() + i);
@@ -168,8 +163,10 @@ int main(int argc, char **argv)
 				for (int i = 0; i < loop; i++)
 				{
 					edge* temp = min.Extract();
+					//makes sure temp is not null pointer
 					if (temp)
-					{
+					{	//if list is has less than three then makes sure to connect to city that doesnt need 
+						//only one edge, prevents subgraphs
 						if (list.size() < 3)
 						{
 							if ((G.vertexList[temp->toID]->E.size() < (maxedge-1)))
@@ -177,6 +174,7 @@ int main(int argc, char **argv)
 								G.addEdge(start->ID, temp->toID, temp->weight);
 								miles += temp->weight;
 								edges++;
+								//if has max number edges wont add to queue
 								if (G.vertexList[temp->toID]->E.size() < maxedge)
 									list.push(G.vertexList[temp->toID]);
 							}
